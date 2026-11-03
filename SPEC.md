@@ -60,14 +60,28 @@ silently in code.
    `results/<analysis_name>/<analysis_name>.{csv|json,png}`.
 2. **Python version.** `requires-python = ">=3.11"` (3.11 is the target; newer versions
    are allowed so the code runs on the dev container's interpreter).
-3. **Alignment method.** Generalized Procrustes is implemented first (rotation +
-   reflection + isotropic scale, reflections allowed, deterministic init on subject 0).
-   INDSCAL (for per-axis weights) is still to be implemented; GPA alone cannot separate
-   rotation from rescaling, so prediction 3 needs both.
-4. **Noise ceiling definition.** Per-concept, row-wise Spearman split-half reliability over
-   random subject halves (default 200 seeded splits), Spearman–Brown corrected (factor 2).
-   Alternatives not chosen: lower/upper RSA ceilings (Nili et al. 2014), Pearson.
-5. **Stress variant.** Kruskal stress-1 (not raw stress or SSTRESS).
+3. **Alignment method.** Both are implemented. *GPA* (`procrustes.py`): centring,
+   orthogonal rotation (reflections allowed by default; `allow_reflection=False` forces
+   det=+1), optional isotropic scaling with the Ten Berge constraint
+   `sum_k s_k^2 ||X_k||^2 = K` on unit-norm inputs; deterministic first target = subject 0;
+   stop when relative loss decrease < 1e-12. Configurations of different width are
+   zero-padded. *INDSCAL* (`indscal.py`): classical double centring of squared
+   dissimilarities, CANDECOMP-style ALS with two concept factors A, B (Carroll & Chang),
+   NNLS for weights (w >= 0), symmetrised `X = (A+B)/2` at the end with weights refitted.
+   Normalisation: columns of X centred with `diag(X^T X)/n = 1`; all scale in the weights;
+   dimensions sorted by mean weight, sign fixed by largest-|entry| positive. Stop when
+   relative strain decrease < 1e-10. Default init = classical MDS of mean scalar products;
+   `init="random"` requires a seed.
+4. **Noise ceiling definition.** Per concept: row-wise split-half reliability of the
+   concept's dissimilarity profile (diagonal excluded), 200 seeded splits (halves
+   floor(K/2)/ceil(K/2)), Spearman by default (Pearson optional), Spearman–Brown factor 2
+   applied to the *mean* split-half r; negative values are not clipped. Dataset level:
+   same split-half on the full upper triangle, plus Nili et al. (2014) lower
+   (leave-one-out) and upper (incl. self) bounds.
+5. **Stress variant.** Kruskal stress-1 with disparities at a chosen level: `ratio`
+   (default), `raw`, `interval`, `ordinal` (isotonic). Per-pair and per-concept
+   contributions are defined to sum to stress-1² (per-concept = half the row sum), plus a
+   row-normalised per-concept stress-1.
 6. **Residual-rank criterion.** 80% variance threshold plus a parallel-analysis null;
    threshold to be confirmed on simulations before applying to real data.
 7. **Similarity format.** Assume full (or NaN-masked partial) N×N dissimilarity matrices
@@ -82,3 +96,13 @@ silently in code.
 10. **Randomness.** All randomness through `structure_of_truth.seeds.make_rng(seed)`;
     seeds are integers passed explicitly and written into every results file.
 11. **Figures.** PNG at 150 dpi via a non-interactive matplotlib backend (Agg).
+12. **INDSCAL loss vs. stress.** The ALS objective is *strain* (LS on scalar products),
+    not Kruskal stress on distances; only strain is guaranteed monotone. The symmetrised
+    solution's strain (`symmetric_strain`) can differ from the ALS strain by round-off-
+    level amounts when A ≠ B. Stress on distances is computed afterwards via
+    `subject_distances` + `stress.stress`.
+13. **Missing data.** Reliability and stress accept NaN (pairwise exclusion). INDSCAL and
+    GPA currently do not; imputation vs. weighted ALS is undecided.
+14. **INDSCAL dimensionality and restarts.** No automatic choice of `dim` and no
+    multi-start yet; local minima are possible with `init="random"`.
+
