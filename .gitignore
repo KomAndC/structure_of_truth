@@ -1,0 +1,10 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.venv/
+build/
+dist/
+*.ipynb
+.ipynb_checkpoints/
+# results/ is tracked; scratch output from tests goes to tmp dirs
