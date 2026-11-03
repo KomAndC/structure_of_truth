@@ -381,7 +381,7 @@ def main(argv=None):
             ys = [next(r[met] for r in summ if r["condition"] == c and r["n_c"] == n and r["noise"] == nz0 and r["mag"] == mg) for n in a.n_c]
             es = [next(r[met + "_sd"] for r in summ if r["condition"] == c and r["n_c"] == n and r["noise"] == nz0 and r["mag"] == mg) for n in a.n_c]
             ax.errorbar(a.n_c, ys, yerr=es, fmt="o-", color=cols[c], label=c, capsize=2)
-        ax.set_xscale("log"); ax.set_xticks(a.n_c, [str(n) for n in a.n_c])
+        ax.set_xscale("log"); ax.minorticks_off(); ax.set_xticks(a.n_c, [str(n) for n in a.n_c])
         ax.set_xlabel("cluster size n_c"); ax.set_title(f"{title}\n(noise {nz0}, mag {mg})", fontsize=8); ax.grid(alpha=0.3)
     axes[0].legend(fontsize=7)
     ax = axes[3]

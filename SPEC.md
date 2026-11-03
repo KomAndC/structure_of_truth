@@ -126,4 +126,26 @@ silently in code.
     σ_s ~ U(0, 0.6); noise s.d. = noise × mean distance × layer factor (0.5 / 1.0 / 1.5);
     clarification reduces the targeted component(s) by 50%. Conclusions are conditional on
     these effect sizes.
+19. **P1/P2 power simulations** (`sim/power.py`). "Judgments per concept" m = number of
+    pairs per concept that *every* subject rates (fixed m-regular pair design; m = 179 is
+    the full matrix). P1: 3 cultures, culture displacement τ per layer (equal .3/.3/.3;
+    weak .2/.3/.4; strong .1/.3/.5), individual deviation 0.2; convergence = Pearson r of
+    culture-mean concept profiles, disattenuated by per-culture split-half SB reliability
+    (50 splits, floored at 0.05); test = one-sided Mann–Whitney physical > value-laden
+    over concepts (concept as unit; calibration checked by the equal-τ scenario). P2:
+    individual deviations of rank 3/5/10/full with equal total variance (5% of ||X||²);
+    residual = subjects × pairs minus column means (alignment-free). Rank methods: var80,
+    scree (log-eigenvalue elbow), Horn parallel analysis (20 permutations), bi-CV, retest
+    CV, and the reliable-variance share (two sessions). P2 "power" = all four true ranks
+    classified low (3, 5) vs high (10, full), r̂ = 0 counted as failure.
+20. **P6 operationalisation** (`sim/propaganda.py`). Interface = pairs between rewritten
+    and unmodified concepts; global fit for (i) = the shared space X as fixed model
+    (ratio-level stress; global similarity Procrustes for per-concept residuals), because a
+    free re-fit absorbs any rigid rewrite. Rigid signature = within-cluster pairs intact
+    (AUC cross > within-cluster) AND cross pairs stressed (AUC cross > rest), thresholds
+    = 95th percentiles of the non-rigid-subset and global-spread controls with equal total
+    squared displacement. "Rewriting more of the interface" has two readings, both
+    simulated: a tapered shell of neighbours moved with the cluster (stress vs X), and a
+    fraction q of interface pairs re-judged under the new geometry (free SMACOF fit,
+    internal-consistency tension).
 

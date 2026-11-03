@@ -211,6 +211,7 @@ def plot_identifiability(summary, noises, Ss):
                     ys.append(np.nanmean([r[metric] for r in rs]))
                 ax.plot(Ss, ys, "o-", color=cmap(ni / max(len(noises) - 1, 1)), label=f"noise {nz}")
             ax.set_xscale("log")
+            ax.minorticks_off()
             ax.set_xticks(Ss, [str(s) for s in Ss])
             ax.set_ylim(-0.05 if metric != "classified_correctly" else 0, 1.02)
             if metric == "classified_correctly":
@@ -237,6 +238,7 @@ def plot_intervention(summary, noises, Ss):
             ax.plot(Ss, ys, "o-", color=cmap(ni / max(len(noises) - 1, 1)), label=f"noise {nz}")
         ax.axhline(0.05, color="grey", lw=0.8, ls=":")
         ax.set_xscale("log")
+        ax.minorticks_off()
         ax.set_xticks(Ss, [str(s) for s in Ss])
         ax.set_ylim(0, 1.02)
         ax.set_title(f"clarification: {scen}", fontsize=9)
