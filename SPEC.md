@@ -105,4 +105,25 @@ silently in code.
     GPA currently do not; imputation vs. weighted ALS is undecided.
 14. **INDSCAL dimensionality and restarts.** No automatic choice of `dim` and no
     multi-start yet; local minima are possible with `init="random"`.
+15. **Rotation vs. rescaling decomposition** (`decompose.py`). Per subject: classical MDS
+    in the known dimensionality k; rescaling magnitude `b_s` = row norm of the
+    double-centred subjects × axes matrix of log INDSCAL weights; rotation magnitude
+    `θ_s = ||R̂_s − I||_F` where `R̂_s` is the proper rotation of the value-laden block
+    fitted *before* the subject's axis scaling (Kiers majorization), after aligning the
+    subject on anchor concepts (physical + intersubjective) assumed not to rotate. A GPA
+    route (no per-axis model) is kept for comparison. Assumptions: k known; anchor and
+    target blocks fixed in advance. Rotation is identifiable only relative to the group
+    consensus, not to an absolute "unrotated" space.
+16. **Detection thresholds.** Both magnitudes have a positive noise floor. In simulation,
+    thresholds come from null-generator replicates at the same noise and S. For real data
+    this requires a parametric bootstrap from an estimated noise model — not yet built.
+17. **P3 test.** Pre/post fitted jointly; one-sided paired Wilcoxon on per-subject drops;
+    "P3 signature" = rotation drop significant AND relative rotation drop > relative
+    rescaling drop (paired, one-sided). The literal reading "weights don't drop"
+    (non-significance) is reported as the *naive* signature and should not be used.
+18. **Simulation parameters** (`sim/generator.py`). 3 × 60 concepts, k = 5, whitened
+    shared space; rotation angle θ_s ~ U(0, 0.5 rad) of the value block; log-weight spread
+    σ_s ~ U(0, 0.6); noise s.d. = noise × mean distance × layer factor (0.5 / 1.0 / 1.5);
+    clarification reduces the targeted component(s) by 50%. Conclusions are conditional on
+    these effect sizes.
 

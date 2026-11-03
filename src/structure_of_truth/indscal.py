@@ -103,9 +103,19 @@ def _stack(dissimilarities: Sequence[np.ndarray]) -> np.ndarray:
     return np.stack([double_center(d) for d in Ds], axis=-1)  # (n, n, K)
 
 
-def _strain(T: np.ndarray, A: np.ndarray, B: np.ndarray, C: np.ndarray) -> float:
-    R = T - np.einsum("id,jd,kd->ijk", A, B, C)
-    return float((R**2).sum())
+def _strain(T: np.ndarray, A: np.ndarray, B: np.ndarray, C: np.ndarray, tt: float | None = None) -> float:
+    """||T - [[A,B,C]]||^2 = ||T||^2 - 2<T,[[A,B,C]]> + ||[[A,B,C]]||^2, without forming the model."""
+    tt = float((T**2).sum()) if tt is None else tt
+    cross = float((_mttkrp(T, B, C, mode=0) * A).sum())
+    model = float(((A.T @ A) * (B.T @ B) * (C.T @ C)).sum())
+    return max(tt - 2.0 * cross + model, 0.0)
+
+
+def _mttkrp(T: np.ndarray, F: np.ndarray, C: np.ndarray, mode: int) -> np.ndarray:
+    """rhs[i,d] = sum_jk T[i,j,k] F[j,d] C[k,d] (mode 0) or sum_ik T[i,j,k] F[i,d] C[k,d] (mode 1)."""
+    n, _, K = T.shape
+    TC = (T.reshape(n * n, K) @ C).reshape(n, n, -1)  # sum over subjects first
+    return np.einsum("ijd,jd->id", TC, F) if mode == 0 else np.einsum("ijd,id->jd", TC, F)
 
 
 def _nnls_weights(T: np.ndarray, A: np.ndarray, B: np.ndarray) -> np.ndarray:
@@ -115,23 +125,21 @@ def _nnls_weights(T: np.ndarray, A: np.ndarray, B: np.ndarray) -> np.ndarray:
     V S V^T, the problem equals min ||S^{1/2} V^T c - S^{-1/2} V^T r_k||^2 + const where
     r_k = (A⊙B)^T vec(B_k).
     """
+    n, _, K = T.shape
     G = (A.T @ A) * (B.T @ B)
     s, V = np.linalg.eigh(G)
     keep = s > s.max() * 1e-12
     s, V = s[keep], V[:, keep]
     M = np.sqrt(s)[:, None] * V.T
-    r = np.einsum("ijk,id,jd->kd", T, A, B)
+    TA = (A.T @ T.reshape(n, n * K)).reshape(-1, n, K)  # (d, j, k)
+    r = np.einsum("djk,jd->kd", TA, B)
     rhs = (r @ V) / np.sqrt(s)
-    return np.stack([nnls(M, rhs[k])[0] for k in range(T.shape[2])])
+    return np.stack([nnls(M, rhs[k])[0] for k in range(K)])
 
 
 def _ls_factor(T: np.ndarray, other: np.ndarray, C: np.ndarray, mode: int) -> np.ndarray:
     G = (other.T @ other) * (C.T @ C)
-    if mode == 0:
-        rhs = np.einsum("ijk,jd,kd->id", T, other, C)
-    else:
-        rhs = np.einsum("ijk,id,kd->jd", T, other, C)
-    return rhs @ np.linalg.pinv(G)
+    return _mttkrp(T, other, C, mode) @ np.linalg.pinv(G)
 
 
 def _normalise(A: np.ndarray, B: np.ndarray, C: np.ndarray) -> tuple[np.ndarray, ...]:
@@ -175,7 +183,8 @@ def indscal(
     A, B, _ = _normalise(A, B, np.ones((K, dim)))
     C = _nnls_weights(T, A, B)
 
-    history = [_strain(T, A, B, C)]
+    tt = float((T**2).sum())
+    history = [_strain(T, A, B, C, tt)]
     converged = False
     it = 0
     for it in range(1, max_iter + 1):
@@ -183,7 +192,7 @@ def indscal(
         B = _ls_factor(T, A, C, mode=1)
         C = _nnls_weights(T, A, B)
         A, B, C = _normalise(A, B, C)
-        history.append(_strain(T, A, B, C))
+        history.append(_strain(T, A, B, C, tt))
         if (history[-2] - history[-1]) <= tol * max(history[0], np.finfo(float).tiny):
             converged = True
             break
@@ -199,12 +208,12 @@ def indscal(
     signs[signs == 0] = 1.0
     X = X * signs
 
-    total = float((T**2).sum())
+    total = tt
     return INDSCALResult(
         X=X,
         weights=W,
         strain=history[-1],
-        symmetric_strain=_strain(T, X, X, W),
+        symmetric_strain=_strain(T, X, X, W, tt),
         fit=1.0 - history[-1] / total if total > 0 else 1.0,
         asymmetry=asym,
         n_iter=it,

@@ -28,3 +28,8 @@ def indscal_data(n=12, dim=2, K=6, seed=0, noise=0.0):
             np.fill_diagonal(D, 0)
         Ds.append(D)
     return X, W, Ds
+
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "sim"))

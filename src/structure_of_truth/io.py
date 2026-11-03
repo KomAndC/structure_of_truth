@@ -21,22 +21,29 @@ def _out_dir(name: str, root: Path | None) -> Path:
     return d
 
 
-def write_json(name: str, data: Mapping[str, Any], *, seed: int, root: Path | None = None) -> Path:
-    """Write results/<name>/<name>.json; the seed is always recorded."""
-    path = _out_dir(name, root) / f"{name}.json"
+def write_json(
+    name: str, data: Mapping[str, Any], *, seed: int, root: Path | None = None, stem: str | None = None
+) -> Path:
+    """Write results/<name>/<stem or name>.json; the seed is always recorded."""
+    path = _out_dir(name, root) / f"{stem or name}.json"
     payload = {"analysis": name, "seed": int(seed), **data}
     path.write_text(json.dumps(payload, indent=2, sort_keys=True, default=_jsonable))
     return path
 
 
 def write_csv(
-    name: str, rows: Iterable[Mapping[str, Any]], *, seed: int, root: Path | None = None
+    name: str,
+    rows: Iterable[Mapping[str, Any]],
+    *,
+    seed: int,
+    root: Path | None = None,
+    stem: str | None = None,
 ) -> Path:
-    """Write results/<name>/<name>.csv; a `seed` column is added to every row."""
+    """Write results/<name>/<stem or name>.csv; a `seed` column is added to every row."""
     rows = [{**r, "seed": int(seed)} for r in rows]
     if not rows:
         raise ValueError("refusing to write an empty results table")
-    path = _out_dir(name, root) / f"{name}.csv"
+    path = _out_dir(name, root) / f"{stem or name}.csv"
     with path.open("w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=list(rows[0].keys()))
         w.writeheader()
@@ -44,9 +51,11 @@ def write_csv(
     return path
 
 
-def save_figure(name: str, fig: plt.Figure, *, root: Path | None = None) -> Path:
-    """Save results/<name>/<name>.png and close the figure."""
-    path = _out_dir(name, root) / f"{name}.png"
+def save_figure(
+    name: str, fig: plt.Figure, *, root: Path | None = None, stem: str | None = None
+) -> Path:
+    """Save results/<name>/<stem or name>.png and close the figure."""
+    path = _out_dir(name, root) / f"{stem or name}.png"
     fig.savefig(path, dpi=150, bbox_inches="tight")
     plt.close(fig)
     return path
