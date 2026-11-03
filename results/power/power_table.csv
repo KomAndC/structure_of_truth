@@ -1,0 +1,141 @@
+prediction,method,noise,m,min_S,S_unit,false_pos_at_min,seed
+P1,corrected gradient test (gradient),0.5,10,40,per culture,0.025,20261104
+P1,corrected gradient test (gradient),0.5,20,10,per culture,0.0,20261104
+P1,corrected gradient test (gradient),0.5,40,10,per culture,0.0,20261104
+P1,corrected gradient test (gradient),0.5,90,5,per culture,0.0,20261104
+P1,corrected gradient test (gradient),0.5,179,5,per culture,0.0,20261104
+P1,corrected gradient test (weak_gradient),0.5,10,>80,per culture,nan,20261104
+P1,corrected gradient test (weak_gradient),0.5,20,40,per culture,0.05,20261104
+P1,corrected gradient test (weak_gradient),0.5,40,20,per culture,0.0,20261104
+P1,corrected gradient test (weak_gradient),0.5,90,10,per culture,0.0,20261104
+P1,corrected gradient test (weak_gradient),0.5,179,5,per culture,0.0,20261104
+P1,corrected gradient test (gradient),1.0,10,>80,per culture,nan,20261104
+P1,corrected gradient test (gradient),1.0,20,80,per culture,0.0,20261104
+P1,corrected gradient test (gradient),1.0,40,40,per culture,0.0,20261104
+P1,corrected gradient test (gradient),1.0,90,20,per culture,0.0,20261104
+P1,corrected gradient test (gradient),1.0,179,20,per culture,0.0,20261104
+P1,corrected gradient test (weak_gradient),1.0,10,>80,per culture,nan,20261104
+P1,corrected gradient test (weak_gradient),1.0,20,>80,per culture,nan,20261104
+P1,corrected gradient test (weak_gradient),1.0,40,>80,per culture,nan,20261104
+P1,corrected gradient test (weak_gradient),1.0,90,>80,per culture,nan,20261104
+P1,corrected gradient test (weak_gradient),1.0,179,>80,per culture,nan,20261104
+P2,var80: 3/5 vs 10/full,0.5,10,>400,total,nan,20261104
+P2,var80: 3/5 vs 10/full,0.5,20,>400,total,nan,20261104
+P2,var80: 3/5 vs 10/full,0.5,40,>400,total,nan,20261104
+P2,var80: 3/5 vs 10/full,0.5,90,>400,total,nan,20261104
+P2,var80: 3/5 vs 10/full,0.5,179,>400,total,nan,20261104
+P2,var80: 3/5 vs 10 (full excluded),0.5,10,>400,total,nan,20261104
+P2,var80: 3/5 vs 10 (full excluded),0.5,20,>400,total,nan,20261104
+P2,var80: 3/5 vs 10 (full excluded),0.5,40,>400,total,nan,20261104
+P2,var80: 3/5 vs 10 (full excluded),0.5,90,>400,total,nan,20261104
+P2,var80: 3/5 vs 10 (full excluded),0.5,179,>400,total,nan,20261104
+P2,var80: 3/5 vs 10/full,1.0,10,>400,total,nan,20261104
+P2,var80: 3/5 vs 10/full,1.0,20,>400,total,nan,20261104
+P2,var80: 3/5 vs 10/full,1.0,40,>400,total,nan,20261104
+P2,var80: 3/5 vs 10/full,1.0,90,>400,total,nan,20261104
+P2,var80: 3/5 vs 10/full,1.0,179,>400,total,nan,20261104
+P2,var80: 3/5 vs 10 (full excluded),1.0,10,>400,total,nan,20261104
+P2,var80: 3/5 vs 10 (full excluded),1.0,20,>400,total,nan,20261104
+P2,var80: 3/5 vs 10 (full excluded),1.0,40,>400,total,nan,20261104
+P2,var80: 3/5 vs 10 (full excluded),1.0,90,>400,total,nan,20261104
+P2,var80: 3/5 vs 10 (full excluded),1.0,179,>400,total,nan,20261104
+P2,scree: 3/5 vs 10/full,0.5,10,>400,total,nan,20261104
+P2,scree: 3/5 vs 10/full,0.5,20,400,total,nan,20261104
+P2,scree: 3/5 vs 10/full,0.5,40,100,total,nan,20261104
+P2,scree: 3/5 vs 10/full,0.5,90,200,total,nan,20261104
+P2,scree: 3/5 vs 10/full,0.5,179,>400,total,nan,20261104
+P2,scree: 3/5 vs 10 (full excluded),0.5,10,400,total,nan,20261104
+P2,scree: 3/5 vs 10 (full excluded),0.5,20,400,total,nan,20261104
+P2,scree: 3/5 vs 10 (full excluded),0.5,40,100,total,nan,20261104
+P2,scree: 3/5 vs 10 (full excluded),0.5,90,100,total,nan,20261104
+P2,scree: 3/5 vs 10 (full excluded),0.5,179,50,total,nan,20261104
+P2,scree: 3/5 vs 10/full,1.0,10,>400,total,nan,20261104
+P2,scree: 3/5 vs 10/full,1.0,20,>400,total,nan,20261104
+P2,scree: 3/5 vs 10/full,1.0,40,>400,total,nan,20261104
+P2,scree: 3/5 vs 10/full,1.0,90,>400,total,nan,20261104
+P2,scree: 3/5 vs 10/full,1.0,179,>400,total,nan,20261104
+P2,scree: 3/5 vs 10 (full excluded),1.0,10,>400,total,nan,20261104
+P2,scree: 3/5 vs 10 (full excluded),1.0,20,>400,total,nan,20261104
+P2,scree: 3/5 vs 10 (full excluded),1.0,40,>400,total,nan,20261104
+P2,scree: 3/5 vs 10 (full excluded),1.0,90,>400,total,nan,20261104
+P2,scree: 3/5 vs 10 (full excluded),1.0,179,400,total,nan,20261104
+P2,parallel: 3/5 vs 10/full,0.5,10,>400,total,nan,20261104
+P2,parallel: 3/5 vs 10/full,0.5,20,>400,total,nan,20261104
+P2,parallel: 3/5 vs 10/full,0.5,40,>400,total,nan,20261104
+P2,parallel: 3/5 vs 10/full,0.5,90,>400,total,nan,20261104
+P2,parallel: 3/5 vs 10/full,0.5,179,>400,total,nan,20261104
+P2,parallel: 3/5 vs 10 (full excluded),0.5,10,>400,total,nan,20261104
+P2,parallel: 3/5 vs 10 (full excluded),0.5,20,>400,total,nan,20261104
+P2,parallel: 3/5 vs 10 (full excluded),0.5,40,>400,total,nan,20261104
+P2,parallel: 3/5 vs 10 (full excluded),0.5,90,50,total,nan,20261104
+P2,parallel: 3/5 vs 10 (full excluded),0.5,179,50,total,nan,20261104
+P2,parallel: 3/5 vs 10/full,1.0,10,>400,total,nan,20261104
+P2,parallel: 3/5 vs 10/full,1.0,20,>400,total,nan,20261104
+P2,parallel: 3/5 vs 10/full,1.0,40,>400,total,nan,20261104
+P2,parallel: 3/5 vs 10/full,1.0,90,>400,total,nan,20261104
+P2,parallel: 3/5 vs 10/full,1.0,179,>400,total,nan,20261104
+P2,parallel: 3/5 vs 10 (full excluded),1.0,10,>400,total,nan,20261104
+P2,parallel: 3/5 vs 10 (full excluded),1.0,20,>400,total,nan,20261104
+P2,parallel: 3/5 vs 10 (full excluded),1.0,40,>400,total,nan,20261104
+P2,parallel: 3/5 vs 10 (full excluded),1.0,90,>400,total,nan,20261104
+P2,parallel: 3/5 vs 10 (full excluded),1.0,179,>400,total,nan,20261104
+P2,cv: 3/5 vs 10/full,0.5,10,>400,total,nan,20261104
+P2,cv: 3/5 vs 10/full,0.5,20,>400,total,nan,20261104
+P2,cv: 3/5 vs 10/full,0.5,40,>400,total,nan,20261104
+P2,cv: 3/5 vs 10/full,0.5,90,>400,total,nan,20261104
+P2,cv: 3/5 vs 10/full,0.5,179,>400,total,nan,20261104
+P2,cv: 3/5 vs 10 (full excluded),0.5,10,>400,total,nan,20261104
+P2,cv: 3/5 vs 10 (full excluded),0.5,20,>400,total,nan,20261104
+P2,cv: 3/5 vs 10 (full excluded),0.5,40,400,total,nan,20261104
+P2,cv: 3/5 vs 10 (full excluded),0.5,90,100,total,nan,20261104
+P2,cv: 3/5 vs 10 (full excluded),0.5,179,100,total,nan,20261104
+P2,cv: 3/5 vs 10/full,1.0,10,>400,total,nan,20261104
+P2,cv: 3/5 vs 10/full,1.0,20,>400,total,nan,20261104
+P2,cv: 3/5 vs 10/full,1.0,40,>400,total,nan,20261104
+P2,cv: 3/5 vs 10/full,1.0,90,>400,total,nan,20261104
+P2,cv: 3/5 vs 10/full,1.0,179,>400,total,nan,20261104
+P2,cv: 3/5 vs 10 (full excluded),1.0,10,>400,total,nan,20261104
+P2,cv: 3/5 vs 10 (full excluded),1.0,20,>400,total,nan,20261104
+P2,cv: 3/5 vs 10 (full excluded),1.0,40,>400,total,nan,20261104
+P2,cv: 3/5 vs 10 (full excluded),1.0,90,>400,total,nan,20261104
+P2,cv: 3/5 vs 10 (full excluded),1.0,179,>400,total,nan,20261104
+P2,retest_cv: 3/5 vs 10/full,0.5,10,>400,total,nan,20261104
+P2,retest_cv: 3/5 vs 10/full,0.5,20,>400,total,nan,20261104
+P2,retest_cv: 3/5 vs 10/full,0.5,40,>400,total,nan,20261104
+P2,retest_cv: 3/5 vs 10/full,0.5,90,>400,total,nan,20261104
+P2,retest_cv: 3/5 vs 10/full,0.5,179,>400,total,nan,20261104
+P2,retest_cv: 3/5 vs 10 (full excluded),0.5,10,>400,total,nan,20261104
+P2,retest_cv: 3/5 vs 10 (full excluded),0.5,20,>400,total,nan,20261104
+P2,retest_cv: 3/5 vs 10 (full excluded),0.5,40,200,total,nan,20261104
+P2,retest_cv: 3/5 vs 10 (full excluded),0.5,90,100,total,nan,20261104
+P2,retest_cv: 3/5 vs 10 (full excluded),0.5,179,100,total,nan,20261104
+P2,retest_cv: 3/5 vs 10/full,1.0,10,>400,total,nan,20261104
+P2,retest_cv: 3/5 vs 10/full,1.0,20,>400,total,nan,20261104
+P2,retest_cv: 3/5 vs 10/full,1.0,40,>400,total,nan,20261104
+P2,retest_cv: 3/5 vs 10/full,1.0,90,>400,total,nan,20261104
+P2,retest_cv: 3/5 vs 10/full,1.0,179,>400,total,nan,20261104
+P2,retest_cv: 3/5 vs 10 (full excluded),1.0,10,>400,total,nan,20261104
+P2,retest_cv: 3/5 vs 10 (full excluded),1.0,20,>400,total,nan,20261104
+P2,retest_cv: 3/5 vs 10 (full excluded),1.0,40,>400,total,nan,20261104
+P2,retest_cv: 3/5 vs 10 (full excluded),1.0,90,>400,total,nan,20261104
+P2,retest_cv: 3/5 vs 10 (full excluded),1.0,179,>400,total,nan,20261104
+P2,retest_share: 3/5 vs 10/full,0.5,10,400,total,nan,20261104
+P2,retest_share: 3/5 vs 10/full,0.5,20,>400,total,nan,20261104
+P2,retest_share: 3/5 vs 10/full,0.5,40,400,total,nan,20261104
+P2,retest_share: 3/5 vs 10/full,0.5,90,100,total,nan,20261104
+P2,retest_share: 3/5 vs 10/full,0.5,179,100,total,nan,20261104
+P2,retest_share: 3/5 vs 10 (full excluded),0.5,10,400,total,nan,20261104
+P2,retest_share: 3/5 vs 10 (full excluded),0.5,20,>400,total,nan,20261104
+P2,retest_share: 3/5 vs 10 (full excluded),0.5,40,400,total,nan,20261104
+P2,retest_share: 3/5 vs 10 (full excluded),0.5,90,100,total,nan,20261104
+P2,retest_share: 3/5 vs 10 (full excluded),0.5,179,100,total,nan,20261104
+P2,retest_share: 3/5 vs 10/full,1.0,10,>400,total,nan,20261104
+P2,retest_share: 3/5 vs 10/full,1.0,20,>400,total,nan,20261104
+P2,retest_share: 3/5 vs 10/full,1.0,40,>400,total,nan,20261104
+P2,retest_share: 3/5 vs 10/full,1.0,90,400,total,nan,20261104
+P2,retest_share: 3/5 vs 10/full,1.0,179,200,total,nan,20261104
+P2,retest_share: 3/5 vs 10 (full excluded),1.0,10,>400,total,nan,20261104
+P2,retest_share: 3/5 vs 10 (full excluded),1.0,20,>400,total,nan,20261104
+P2,retest_share: 3/5 vs 10 (full excluded),1.0,40,>400,total,nan,20261104
+P2,retest_share: 3/5 vs 10 (full excluded),1.0,90,400,total,nan,20261104
+P2,retest_share: 3/5 vs 10 (full excluded),1.0,179,200,total,nan,20261104

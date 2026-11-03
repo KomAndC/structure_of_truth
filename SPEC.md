@@ -82,8 +82,12 @@ silently in code.
    (default), `raw`, `interval`, `ordinal` (isotonic). Per-pair and per-concept
    contributions are defined to sum to stress-1² (per-concept = half the row sum), plus a
    row-normalised per-concept stress-1.
-6. **Residual-rank criterion.** 80% variance threshold plus a parallel-analysis null;
-   threshold to be confirmed on simulations before applying to real data.
+6. **Residual-rank criterion.** ~~80% variance threshold~~ — **retired**: simulation
+   (`results/power.md`) shows it tracks noise (r̂ ≈ 0.75·S for every true rank). Use
+   bi-cross-validation (`cv`) for the shared rank and, for the P2 test itself, the
+   two-session reliable-variance share (`retest_share`). A low-rank verdict must be
+   accompanied by a simulation at the observed noise level showing that a rank-10 truth
+   would have been resolved (partially powered designs falsely report low rank).
 7. **Similarity format.** Assume full (or NaN-masked partial) N×N dissimilarity matrices
    per subject. The collection method (pairwise ratings vs. spatial arrangement vs. triplet
    odd-one-out) is not yet decided and determines how matrices are built.

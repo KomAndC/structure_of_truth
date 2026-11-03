@@ -49,7 +49,7 @@ P2 — rank of the individual-differences residual
 
 Usage:  python sim/power.py --seed 20261104 [--quick] [--workers 4] [--only p1|p2]
 Outputs: results/power/{p1_reps,p1,p2_reps,p2,power_table}.csv, power.json,
-p1_gradient.png, p2_rank.png, power.png, tables.md
+p1_gradient.png, p2_rank.png, p2_false_low.png, power.png (via sim/power_figures.py)
 """
 
 from __future__ import annotations
@@ -67,12 +67,11 @@ os.environ.setdefault("OPENBLAS_NUM_THREADS", "1")
 os.environ.setdefault("MKL_NUM_THREADS", "1")
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-import matplotlib.pyplot as plt  # noqa: E402
 import numpy as np  # noqa: E402
 from scipy.stats import mannwhitneyu  # noqa: E402
 
 from generator import latent_space  # noqa: E402
-from structure_of_truth.io import save_figure, write_csv, write_json  # noqa: E402
+from structure_of_truth.io import write_csv, write_json  # noqa: E402
 from structure_of_truth.reliability import spearman_brown  # noqa: E402
 from structure_of_truth.seeds import make_rng  # noqa: E402
 
@@ -370,21 +369,6 @@ def min_design(cells: dict, Ss, ms, target=0.8):
     return res
 
 
-def heat(ax, cells, Ss, ms, title):
-    M = np.array([[cells.get((S, m), np.nan) for m in ms] for S in Ss])
-    im = ax.imshow(M, vmin=0, vmax=1, cmap="viridis", origin="lower", aspect="auto")
-    for i in range(len(Ss)):
-        for j in range(len(ms)):
-            if not np.isnan(M[i, j]):
-                ax.text(j, i, f"{M[i, j]:.2f}", ha="center", va="center", fontsize=7,
-                        color="black" if M[i, j] > 0.6 else "white")
-    ax.set_xticks(range(len(ms)), [str(m) for m in ms])
-    ax.set_yticks(range(len(Ss)), [str(s) for s in Ss])
-    ax.set_xlabel("judgments per concept per subject (m)")
-    ax.set_title(title, fontsize=8)
-    return im
-
-
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--seed", type=int, required=True)
@@ -427,26 +411,6 @@ def main(argv=None):
                 power_rows.append(dict(prediction="P1", method=f"corrected gradient test ({gs})", noise=nz, m=m,
                                        min_S=S if S is not None else f">{max(a.S1)}", S_unit="per culture",
                                        false_pos_at_min=fp.get((S, m), float("nan")) if S else float("nan")))
-        # figure: raw vs corrected vs true layer means at the largest S, full m, each noise
-        fig, axes = plt.subplots(1, len(P1_TAU) * len(a.noise), figsize=(3.6 * len(P1_TAU) * len(a.noise), 3.6), sharey=True)
-        axes = np.atleast_1d(axes)
-        for j, (sc, nz) in enumerate(product(P1_TAU, a.noise)):
-            ax = axes[j]
-            for S, ls in zip(a.S1, ("-", "--", ":", "-.", (0, (1, 1)))):
-                r = next(x for x in p1s if x["scenario"] == sc and x["noise"] == nz and x["S"] == S and x["m"] == max(a.m))
-                if S in (min(a.S1), max(a.S1)):
-                    ax.plot([0, 1, 2], [r["raw_phys"], r["raw_inter"], r["raw_value"]], "o", ls=ls, color="tab:red", label=f"raw S={S}")
-                    ax.plot([0, 1, 2], [r["corr_phys"], r["corr_inter"], r["corr_value"]], "s", ls=ls, color="tab:blue", label=f"corrected S={S}")
-            r = next(x for x in p1s if x["scenario"] == sc and x["noise"] == nz and x["S"] == max(a.S1) and x["m"] == max(a.m))
-            ax.plot([0, 1, 2], [r["true_phys"], r["true_inter"], r["true_value"]], "k^-", lw=2, label="true")
-            ax.set_xticks([0, 1, 2], ["physical", "intersubj.", "value"])
-            ax.set_title(f"{sc} τ, noise {nz}, m={max(a.m)}", fontsize=9)
-            ax.grid(alpha=0.3)
-        axes[0].set_ylabel("cross-cultural convergence (r)")
-        axes[0].legend(fontsize=7)
-        fig.suptitle("P1: apparent layer gradient, raw vs noise-ceiling corrected")
-        fig.tight_layout()
-        save_figure(NAME, fig, stem="p1_gradient")
     t1 = time.time()
 
     if a.only in (None, "p2"):
@@ -472,37 +436,16 @@ def main(argv=None):
                     power_rows.append(dict(prediction="P2", method=f"{meth}: {label}", noise=nz, m=m,
                                            min_S=S if S is not None else f">{max(a.S2)}", S_unit="total",
                                            false_pos_at_min=float("nan")))
-        fig, axes = plt.subplots(len(a.noise), len(METHODS), figsize=(3.2 * len(METHODS), 3.0 * len(a.noise)), squeeze=False)
-        for i, nz in enumerate(a.noise):
-            for j, meth in enumerate(METHODS):
-                cells = {(S, m): sep[(meth, nz, S, m)] for S in a.S2 for m in a.m}
-                im = heat(axes[i, j], cells, a.S2, a.m, f"{meth}, noise {nz}\nP(all 4 ranks separated)")
-                if j == 0:
-                    axes[i, j].set_ylabel("subjects S")
-        fig.colorbar(im, ax=axes, shrink=0.6)
-        fig.suptitle("P2: worst-case low/high-rank separation over true ranks {3, 5, 10, full}")
-        save_figure(NAME, fig, stem="p2_rank")
 
     if power_rows:
         write_csv(NAME, power_rows, seed=a.seed, stem="power_table")
-    # combined power figure: P1 corrected power and best P2 method
-    if a.only is None:
-        fig, axes = plt.subplots(len(a.noise), 3, figsize=(12, 3.2 * len(a.noise)), squeeze=False)
-        for i, nz in enumerate(a.noise):
-            heat(axes[i, 0], {(r["S"], r["m"]): r["sig_corr"] for r in p1s if r["scenario"] == "weak_gradient" and r["noise"] == nz},
-                 a.S1, a.m, f"P1 power (weak true gradient), corrected, noise {nz}")
-            heat(axes[i, 1], {(r["S"], r["m"]): r["sig_raw"] for r in p1s if r["scenario"] == "equal" and r["noise"] == nz},
-                 a.S1, a.m, f"P1 false positives (no true gradient), RAW, noise {nz}")
-            im = heat(axes[i, 2], {(S, m): sep[("retest_share", nz, S, m)] for S in a.S2 for m in a.m},
-                      a.S2, a.m, f"P2 low/high separation, retest_share (2 sessions), noise {nz}")
-            axes[i, 0].set_ylabel("subjects per culture")
-            axes[i, 2].set_ylabel("subjects (total)")
-        fig.colorbar(im, ax=axes, shrink=0.6)
-        fig.suptitle("Power: 80% contour is the design target")
-        save_figure(NAME, fig, stem="power")
 
     meta["runtime_s"] = dict(p1=t1 - t0, p2=time.time() - t1)
     write_json(NAME, meta, seed=a.seed)
+    if a.only is None:
+        import power_figures
+
+        power_figures.main()
     print(f"done in {time.time() - t0:.0f}s")
 
 
