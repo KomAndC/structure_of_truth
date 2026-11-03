@@ -1,0 +1,71 @@
+{
+  "analysis": "identifiability",
+  "config": {
+    "S": [
+      20,
+      50,
+      100,
+      200
+    ],
+    "indscal": {
+      "max_iter": 500,
+      "tol": 1e-07
+    },
+    "layer_noise": [
+      0.5,
+      1.0,
+      1.5
+    ],
+    "noise": [
+      0.1,
+      0.25,
+      0.5,
+      1.0,
+      1.5
+    ],
+    "quick": false,
+    "reduction": 0.5,
+    "reps": 16,
+    "sim_defaults": {
+      "generator": "C",
+      "k": 5,
+      "layer_noise": [
+        0.5,
+        1.0,
+        1.5
+      ],
+      "n_per_layer": 60,
+      "n_subjects": 50,
+      "noise": 0.3,
+      "sigma_max": 0.6,
+      "theta_max": 0.5
+    }
+  },
+  "reliability_by_noise": {
+    "0.1": {
+      "nili_lower": 0.9339841891140084,
+      "single_subject_r": 0.952569821072936
+    },
+    "0.25": {
+      "nili_lower": 0.7628542077874987,
+      "single_subject_r": 0.7827082441801794
+    },
+    "0.5": {
+      "nili_lower": 0.5109337161596252,
+      "single_subject_r": 0.5318634580078068
+    },
+    "1.0": {
+      "nili_lower": 0.2860331298141823,
+      "single_subject_r": 0.2695346335861919
+    },
+    "1.5": {
+      "nili_lower": 0.2486610204252366,
+      "single_subject_r": 0.1529340217080311
+    }
+  },
+  "runtime_s": {
+    "identifiability": 762.4555413722992,
+    "intervention": 1176.229975938797
+  },
+  "seed": 20261103
+}
